@@ -1,7 +1,7 @@
 import http2 from "node:http2";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { createConnection, createServer } from "node:net";
-import { homedir, tmpdir } from "node:os";
+import { homedir } from "node:os";
 import { join } from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
 import {
@@ -41,8 +41,6 @@ function discoveryDirs(): string[] {
   const home = homedir();
   const dirs = [
     join(home, "Library", "Caches", "TemporaryItems", "avd", "running"),
-    join(tmpdir(), "avd", "running"),
-    join(home, ".android", "avd", "running"),
   ];
   if (process.env.XDG_RUNTIME_DIR) {
     dirs.push(join(process.env.XDG_RUNTIME_DIR, "avd", "running"));
@@ -50,6 +48,7 @@ function discoveryDirs(): string[] {
   if (process.env.LOCALAPPDATA) {
     dirs.push(join(process.env.LOCALAPPDATA, "Temp", "avd", "running"));
   }
+  dirs.push(join(home, ".android", "avd", "running"));
   return dirs;
 }
 
